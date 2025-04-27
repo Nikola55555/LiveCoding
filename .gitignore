@@ -7,6 +7,10 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+.idea
+*.iml
+report
+allure-results
 .Python
 build/
 develop-eggs/

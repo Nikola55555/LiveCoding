@@ -1,6 +1,8 @@
+import time
 import allure
 from base.base_page import BasePage
 from config.links import Links
+from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions as EC  
 
 
@@ -9,11 +11,13 @@ class PersonalPage(BasePage):
 
     FIRST_NAME_FIELD = ("xpath", "//input[@name='firstName']")
     SUBMIT_BUTTON = ("xpath", "//button[@type='submit'][1]")
+    SPPINER = ("xpath", "//div[@class='oxd-loading-spinner-container']")
 
     def change_name(self, new_name):
         with allure.step(f"Change name to '{new_name}'"): 
             first_name_field = self.wait.until(EC.element_to_be_clickable(self.FIRST_NAME_FIELD))
-            first_name_field.clear()
+            first_name_field.send_keys(Keys.CONTROL + "A")
+            first_name_field.send_keys(Keys.BACKSPACE)
             #assert first_name_field.get_attribute("value") == "", "There is a text in the field"
             first_name_field.send_keys(new_name)
             self.name = new_name
@@ -24,4 +28,6 @@ class PersonalPage(BasePage):
 
     @allure.step("Check that changes are saved")
     def is_changes_saved(self):
+        self.wait.until(EC.invisibility_of_element_located(self.SPPINER))
+        self.wait.until(EC.visibility_of_element_located(self.FIRST_NAME_FIELD))
         self.wait.until(EC.text_to_be_present_in_element_value(self.FIRST_NAME_FIELD, self.name))
