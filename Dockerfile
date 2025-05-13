@@ -1,6 +1,9 @@
 # Базовый образ
 FROM python:3.12-slim
 
+# Создание рабочей директории
+WORKDIR /usr/workspace
+
 # Установка системных зависимостей
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -17,9 +20,6 @@ RUN curl -o allure-2.13.8.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta
     tar -zxvf allure-2.13.8.tgz -C /opt/ && \
     ln -s /opt/allure-2.13.8/bin/allure /usr/bin/allure && \
     rm allure-2.13.8.tgz
-
-# Создание рабочей директории
-WORKDIR /usr/workspace
 
 # Копирование файла зависимостей
 COPY ./requirements.txt .
